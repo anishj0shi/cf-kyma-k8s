@@ -9,6 +9,8 @@ import (
 	"net/http"
 )
 
+var cartURL = "https://accstorefront.crz8nbwca-internalc6-d29-public.model-t.cc.commerce.ondemand.com/?site=electronics"
+
 func main() {
 	ctx := context.Background()
 	p, err := cloudevents.NewHTTP()
@@ -23,9 +25,7 @@ func main() {
 
 	router := http.NewServeMux()
 	router.HandleFunc("/createCart", handleCart)
-	router.Handle("/",h)
-
-
+	router.Handle("/", h)
 
 	log.Printf("will listen on :8080\n")
 	if err := http.ListenAndServe(":8080", router); err != nil {
@@ -66,4 +66,6 @@ func handleCart(w http.ResponseWriter, req *http.Request) {
 	cartClient := commerce_client.NewShoppingCartClient(userId[0])
 	cartClient.CreateShoppingCart()
 	cartClient.AddProductsToCart(productIds...)
+
+	http.Redirect(w, req, cartURL, http.StatusSeeOther)
 }
