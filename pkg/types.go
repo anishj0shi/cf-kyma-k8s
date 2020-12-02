@@ -5,6 +5,10 @@ type OrderCreatedEvent struct {
 }
 
 type CartEntry struct {
-	Quantity int64             `json:"quantity"`
-	Product  map[string]string `json:"product"`
+	Quantity int64   `json:"quantity"`
+	Product  Product `json:"product"`
+}
+
+type Product struct {
+	Code string `json:"code"`
 }
